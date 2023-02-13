@@ -69,9 +69,32 @@ docker-compose version 1.29.1, build c34c88b2
 root@server:~$ sudo mkdir -p /opt/develop/app/
 root@server:~$ cd /opt/develop/app/
 ```
+
 4. Set the .env vars
 
 5. Run the project
+
+```terminal
+user@server:~/opt/develop/app/$ docker-compose -f docker-compose.dev.yml up -d --build
+```
+
+**Version Control Tip**: When your Node package.json/package-lock.json files change, either when pulling, or switching branches, in addition to rebuilding the Image, you have to remove the Volume, and delete its contents:
+
+1. Search for the volume name with the suffix `_notused`:
+
+```terminal
+user@server:~/opt/develop/app/$ docker volume ls
+DRIVER              VOLUME NAME
+local               app_node_modules_notused
+```
+
+2. Remove the volume:
+
+```terminal
+user@server:~/opt/develop/app/$ docker volume rm app_node_modules_notused
+```
+
+3. Build the image again:
 
 ```terminal
 user@server:~/opt/develop/app/$ docker-compose -f docker-compose.dev.yml up -d --build
